@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Any
+import math
 
 class PointModifier(ABC):
     _identifier: str
@@ -42,7 +43,7 @@ class ExpectedPointModifier(PointModifier, ABC):
         pass
 
 class ExpectedGoalsPointModifier(ExpectedPointModifier):
-    POINTS_PER_GOAL_MAP = {1: 10, 2: 6, 3: 5, 4: 4}
+    POINTS_PER_GOAL_MAP = {1: 10, 2: 6, 3: 5, 4: 4} # Points per goal by position
 
     def __init__(self, expected_goals: float, element_type: int):
         identifier: str = 'expected_goals'
@@ -51,3 +52,25 @@ class ExpectedGoalsPointModifier(ExpectedPointModifier):
     def compute_expected_points(self, expected_value: float, element_type: int) -> float:
         points_per_goal = self.POINTS_PER_GOAL_MAP.get(element_type, 0)
         return expected_value * points_per_goal
+
+class ExpectedAssistsPointModifier(ExpectedPointModifier):
+    POINTS_PER_ASSIST = 3
+
+    def __init__(self, expected_assists: float, element_type: int):
+        identifier: str = 'expected_assists'
+        super().__init__(identifier, expected_assists, element_type)
+
+    def compute_expected_points(self, expected_value: float, element_type: int) -> float:
+        return expected_value * self.POINTS_PER_ASSIST
+
+class ExpectedCleanSheetsPointModifier(ExpectedPointModifier):
+    CLEAN_SHEET_POINTS_MAP = {1: 4, 2: 4, 3: 1, 4: 0} # Points for clean sheet by position
+    
+    def __init__(self, expected_goals_conceded: float, element_type: int):
+        identifier: str = 'expected_clean_sheets'
+        super().__init__(identifier, expected_goals_conceded, element_type)
+    
+    def compute_expected_points(self, expected_value: float, element_type: int) -> float:
+        clean_sheet_points = self.CLEAN_SHEET_POINTS_MAP.get(element_type, 0)
+        clean_sheet_probability = math.exp(-expected_value) # Poisson probability of k=0 goals conceded
+        return clean_sheet_probability * clean_sheet_points
