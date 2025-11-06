@@ -56,19 +56,19 @@ class Pick:
         self.saves: int = pick_stats.get('saves', 0)
         self.bonus: int = pick_stats.get('bonus', 0)
         self.bps: int = pick_stats.get('bps', 0)
-        self.influence: float = pick_stats.get('influence', 0.0)
-        self.creativity: float = pick_stats.get('creativity', 0.0)
-        self.threat: float = pick_stats.get('threat', 0.0)
-        self.ict_index: float = pick_stats.get('ict_index', 0.0)
+        self.influence: float = float(pick_stats.get('influence', 0.0))
+        self.creativity: float = float(pick_stats.get('creativity', 0.0))
+        self.threat: float = float(pick_stats.get('threat', 0.0))
+        self.ict_index: float = float(pick_stats.get('ict_index', 0.0))
         self.clearances_blocks_interceptions: int = pick_stats.get('clearances_blocks_interceptions', 0)
         self.recoveries: int = pick_stats.get('recoveries', 0)
         self.tackles: int = pick_stats.get('tackles', 0)
         self.defensive_contribution: int = pick_stats.get('defensive_contribution', 0)
         self.starts: int = pick_stats.get('starts', 0)
-        self.expected_goals: float = pick_stats.get('expected_goals', 0.0)
-        self.expected_assists: float = pick_stats.get('expected_assists', 0.0)
-        self.expected_goal_involvements: float = pick_stats.get('expected_goal_involvements', 0.0)
-        self.expected_goals_conceded: float = pick_stats.get('expected_goals_conceded', 0.0)
+        self.expected_goals: float = float(pick_stats.get('expected_goals', 0.0))
+        self.expected_assists: float = float(pick_stats.get('expected_assists', 0.0))
+        self.expected_goal_involvements: float = float(pick_stats.get('expected_goal_involvements', 0.0))
+        self.expected_goals_conceded: float = float(pick_stats.get('expected_goals_conceded', 0.0))
         self.total_points: int = pick_stats.get('total_points', 0)
         self.in_dreamteam: bool = pick_stats.get('in_dreamteam', False)
 
@@ -76,8 +76,8 @@ class Pick:
         if not player_stats:
             raise ValueError(f"No player data found for player ID {self.player_id} in the provided players data.")
         
-        self.element_type = player_stats.get('element_type', 0)
-        self.team = player_stats.get('team', 0)
+        self.element_type: int = player_stats.get('element_type', 0)
+        self.team: int = player_stats.get('team', 0)
 
         # TODO
         # Add point modifiers processing here
